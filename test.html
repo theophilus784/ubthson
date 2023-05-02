@@ -1,0 +1,49 @@
+<form class="my-form" method="post" id="my-form">
+  <div id="form-error"></div>
+  <!-- <fieldset> -->
+    <div>School Attended</div>
+      <!-- <div class="school-entry"> -->
+        <div class="school-entry form-row">
+          <div class="form-group">
+            <label for="school-attended">School Attended<span class="required">*</span></label>
+            <input type="text" id="school-attended-1" name="school-attended-1" class="form-field" required>
+          </div>
+          <div class="form-group">
+            <label for="from-year">From (year)</label>
+            <input type="number" id="from-year-1" name="from-year-1" class="form-field" min="1900" max="2099" step="1">
+          </div>
+          <div class="form-group">
+            <label for="to-year">To (year)</label>
+            <input type="number" id="to-year-1" name="to-year-1" class="form-field" min="1900" max="2099" step="1">
+          </div>
+        </div>
+    <!-- </div> -->
+    <button type="button" id="add-school-entry">+</button>
+  <!-- </fieldset> -->
+</form>
+
+<script>
+  const addButton = document.getElementById('add-school-entry');
+  addButton.addEventListener('click', () => {
+    const schoolEntry = document.querySelector('.school-entry');
+    const clone = schoolEntry.cloneNode(true);
+    const entryCount = document.querySelectorAll('.school-entry').length + 1;
+    const inputs = clone.querySelectorAll('input');
+    inputs.forEach(input => {
+      const name = input.getAttribute('name');
+      if (name) {
+        input.setAttribute('name', `${name.replace(/-\d+$/, '')}-${entryCount}`);
+      }
+      const id = input.getAttribute('id');
+      if (id) {
+        input.setAttribute('id', `${id}-${entryCount}`);
+      }
+      input.value = '';
+    });
+    const labels = clone.querySelectorAll('label');
+    // Remove each label element
+    labels.forEach(label => label.remove());
+    
+    schoolEntry.parentNode.insertBefore(clone, addButton);
+  });
+</script>
