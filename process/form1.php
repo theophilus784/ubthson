@@ -1,6 +1,7 @@
 <?php
 if(isset($_POST['formName'])) {
-    $user_id = '1';
+  include '../server/db.php';
+
   // Sanitize input data
   $firstname = filter_var($_POST['firstname'], FILTER_SANITIZE_STRING);
   $lastname = filter_var($_POST['lastname'], FILTER_SANITIZE_STRING);
@@ -58,12 +59,10 @@ if(isset($_POST['formName'])) {
     echo "</ul>";
   } else {
     // If there are no errors, insert data into database
-
-    include '../server/db.php';
     
     // Prepare and bind SQL statement
-    $stmt = $conn->prepare("INSERT INTO users (user_id, firstname, lastname, jamb_reg_num, email, sex, date_of_birth, nationality, state_of_origin, local_govt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE user_id = ?, firstname =  ?, lastname = ?, jamb_reg_num = ?, email= ?, sex = ?, date_of_birth = ?, nationality = ?, state_of_origin = ?, local_govt = ?");
-    $stmt->bind_param("ssssssssssssssssssss", $user_id, $firstname, $lastname, $jamb_reg_num, $email, $sex, $date_of_birth, $nationality, $state_of_origin, $lga, $user_id, $firstname, $lastname, $jamb_reg_num, $email, $sex, $date_of_birth, $nationality, $state_of_origin, $lga);
+    $stmt = $conn->prepare("INSERT INTO users (user_id, firstname, lastname, jamb_reg_num, email, sex, date_of_birth, nationality, state_of_origin, local_govt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE firstname =  ?, lastname = ?, jamb_reg_num = ?, email= ?, sex = ?, date_of_birth = ?, nationality = ?, state_of_origin = ?, local_govt = ?");
+    $stmt->bind_param("sssssssssssssssssss", $user_id, $firstname, $lastname, $jamb_reg_num, $email, $sex, $date_of_birth, $nationality, $state_of_origin, $lga, $firstname, $lastname, $jamb_reg_num, $email, $sex, $date_of_birth, $nationality, $state_of_origin, $lga);
     
     // Execute statement and check for errors
     if($stmt->execute() === TRUE) {

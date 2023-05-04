@@ -1,4 +1,6 @@
 <?php
+    $user_id = 1;
+    
     $servername = "localhost";
     $username = "theo";
     $password = "1234";
